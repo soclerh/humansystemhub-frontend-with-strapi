@@ -23,17 +23,17 @@ export default function AboutHero({ data }: { data?: any }) {
           unoptimized
         />
         {/* Overlay to ensure text readability */}
-        <div className="absolute inset-0 bg-[#F9FBF8]/70 backdrop-blur-[2px]"></div>
+        <div className="absolute inset-0 backdrop-blur-[2px]"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10">
-        <div className="w-fit mx-auto px-4 py-1 border border-gray-900 rounded-full mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <p className="text-sm font-semibold uppercase tracking-widest text-gray-900">
+        <div className="w-fit mx-auto px-4 py-1 border border-gray-100 rounded-full mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <p className="text-sm font-semibold uppercase tracking-widest text-gray-100">
             {tag || "Our Story"}
           </p>
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight tracking-tight mb-8 animate-in fade-in slide-in-from-bottom-6 duration-1000">
+        <h1 className="text-5xl md:text-7xl font-extrabold text-[#D4AF37] leading-tight tracking-tight mb-8 animate-in fade-in slide-in-from-bottom-6 duration-1000">
           {title ? (
             title.split("\\n").map((line: string, i: number) => (
               <span key={i}>
@@ -49,7 +49,7 @@ export default function AboutHero({ data }: { data?: any }) {
           )}
         </h1>
 
-        <p className="max-w-2xl mx-auto text-lg text-gray-700 font-medium leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <p className="max-w-2xl mx-auto text-lg text-gray-100 font-medium leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000">
           {description ||
             "Human Systems was founded on a simple belief: HR technology should empower people, not complicate processes. We build tools that make work better for everyone."}
         </p>
