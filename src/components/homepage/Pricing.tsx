@@ -91,7 +91,7 @@ export default function Pricing({ pricingData, fallbackData }: any) {
 
               <div className="flex items-baseline gap-2 mb-4">
                 <span className="text-6xl font-bold tracking-tighter text-white">
-                  ${isAnnual ? plan.yearly : plan.monthly}
+                  {isAnnual ? plan.yearly : plan.monthly}
                 </span>
                 {plan.title !== "Enterprise" && (
                   <span className="text-sm text-emerald-100/50">
