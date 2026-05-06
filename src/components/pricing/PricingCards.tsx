@@ -101,7 +101,7 @@ export default function PricingCards({
                     plan.highlighted ? "text-[#E3FFCD]" : "text-[#013228]"
                   }`}
                 >
-                  ${isAnnual ? plan.yearly : plan.monthly}
+                  {isAnnual ? plan.yearly : plan.monthly}
                 </span>
                 <span
                   className={`text-sm font-medium ${
