@@ -285,6 +285,15 @@ export const getPageQuery = (slug: string, locale: string = "en") =>
             "modules.faq": {
               populate: "*", // Populates the repeatable FAQ items/cards
             },
+            "pricing.compare-plans": {
+              populate: {
+                comparisonData: {
+                  populate: {
+                    features: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -332,14 +341,13 @@ export const GlobalQuery = (locale: string = "en") =>
             },
             "global.footer": {
               populate: {
-                logo:{
+                logo: {
                   fields: ["url"],
-                  
                 },
-                social_links:true,
-                contacts:true,
-              }
-            }
+                social_links: true,
+                contacts: true,
+              },
+            },
           },
         },
       },
