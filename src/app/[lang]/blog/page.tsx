@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ChevronRight, Clock } from "lucide-react";
+import { ChevronRight, Clock } from "lucide-react";
 import BlogCard from "@/components/blog/BlogCard";
 import { getAllBlogsData } from "@/data/loader";
 import { getStrapiURL } from "@/utils/get-strapi-url";
@@ -18,23 +18,24 @@ export default async function BlogListingPage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  
+
   // Fetch dynamic localized blogs
   const strapiData = await getAllBlogsData(lang);
   const allBlogs = strapiData?.data || [];
 
-  const featuredBlog = allBlogs[0]?.attributes || allBlogs[0]; // Handle Strapi v4/v5 structure
+  const featuredBlog = allBlogs[0]?.attributes || allBlogs[0];
   const remainingBlogs = allBlogs.slice(1);
 
   // Helper for the featured image
-  const featuredImageUrl = featuredBlog?.image?.data?.attributes?.url || featuredBlog?.image?.url;
-  const fullFeaturedImageUrl = featuredImageUrl ? `${getStrapiURL()}${featuredImageUrl}` : "/fallback-image.jpg";
+  const featuredImageUrl =
+    featuredBlog?.image?.data?.attributes?.url || featuredBlog?.image?.url;
+  const fullFeaturedImageUrl = featuredImageUrl
+    ? `${getStrapiURL()}${featuredImageUrl}`
+    : "/fallback-image.jpg";
 
   return (
     <main className="min-h-screen bg-white text-[#1A1A1A]">
-      {/* Standardized Hero Section (Matching Pricing/Modules/About) */}
       <section className="relative pt-32 pb-20 overflow-hidden rounded-b-[50px] min-h-[600px] flex items-center">
-        {/* --- Background Image Wrapper --- */}
         <div className="absolute inset-0 z-0">
           <Image
             src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80"
@@ -43,14 +44,10 @@ export default async function BlogListingPage({
             priority
             className="object-cover"
           />
-          {/* Site-wide Glassmorphism Overlay */}
           <div className="absolute inset-0 bg-[#F9FBF8]/70 backdrop-blur-[2px]"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10">
-          {/* Back Navigation */}
-
-          {/* Badge Pill */}
           <div className="w-fit mx-auto px-4 py-1 border border-[#013228] rounded-full mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 backdrop-blur-md">
             <p className="text-sm font-semibold uppercase tracking-widest text-[#013228]">
               Our Journal
@@ -68,18 +65,17 @@ export default async function BlogListingPage({
           </p>
         </div>
 
-        {/* Decorative Blurs (Site Signature) */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#E3FFCD]/40 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 z-0"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#E3FFCD]/30 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 z-0"></div>
       </section>
 
-      {/* Main Content Section */}
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-24">
         {/* Featured Post */}
         {featuredBlog && (
           <div className="mb-32">
+            {/* Corrected: Added the /${lang} prefix to the link */}
             <Link
-              href={`/blog/${featuredBlog.slug}`}
+              href={`/${lang}/blog/${featuredBlog.slug}`}
               className="block group relative border border-gray-500 hover:border-[#013228] rounded-[40px] overflow-hidden bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 h-full">
@@ -103,7 +99,7 @@ export default async function BlogListingPage({
                     {featuredBlog.title}
                   </h2>
                   <p className="text-gray-600 mb-10 leading-relaxed line-clamp-4">
-                    {featuredBlog.content_title} {/* Using content_title as excerpt */}
+                    {featuredBlog.content_title}
                   </p>
 
                   <div className="inline-flex w-max items-center justify-center gap-3 bg-[#013228] text-[#E3FFCD] px-8 py-4 rounded-2xl font-bold text-sm uppercase tracking-widest group-hover:scale-[1.02] group-hover:bg-[#024a3c] transition-all">
@@ -115,7 +111,6 @@ export default async function BlogListingPage({
           </div>
         )}
 
-        {/* Section Title */}
         <div className="flex items-center gap-6 mb-16">
           <h3 className="text-2xl font-black text-[#013228] uppercase tracking-tighter">
             Latest Updates
@@ -130,7 +125,10 @@ export default async function BlogListingPage({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {remainingBlogs.map((blogItem: any) => {
             const blog = blogItem.attributes || blogItem;
-            return <BlogCard key={blog.slug} blog={blog} />;
+            {
+              /* Corrected: Passed the lang prop to BlogCard */
+            }
+            return <BlogCard key={blog.slug} blog={blog} lang={lang} />;
           })}
         </div>
       </section>
