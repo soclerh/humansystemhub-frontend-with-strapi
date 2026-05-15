@@ -11,7 +11,6 @@ export default async function RecentBlogs({ data, lang }: any) {
   return (
     <section className="relative w-full py-24 px-6 md:px-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -36,8 +35,9 @@ export default async function RecentBlogs({ data, lang }: any) {
             </h2>
           </div>
 
+          {/* Corrected: Added the /${lang} prefix to the "View All" link */}
           <Link
-            href={cta ? `/${cta.href}` : "/blog"}
+            href={cta ? `/${lang}/${cta.href}` : `/${lang}/blog`}
             className="group inline-flex items-center gap-2 text-sm font-bold text-[#013228] uppercase tracking-widest hover:text-emerald-700 transition-colors"
           >
             {cta?.text || "VIEW ALL POSTS"}
@@ -54,7 +54,8 @@ export default async function RecentBlogs({ data, lang }: any) {
             const blog = blogItem.attributes || blogItem;
             return (
               <div key={blog.id || blog.slug} className="h-full">
-                <BlogCard blog={blog} />
+                {/* Corrected: Passed the lang prop to BlogCard */}
+                <BlogCard blog={blog} lang={lang} />
               </div>
             );
           })}
