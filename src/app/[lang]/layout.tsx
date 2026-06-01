@@ -36,16 +36,23 @@ export default async function RootLayout({
 
   // Fetch Global Data for Header & (future) Footer Layouts safely
   const globalResponse = await getGlobalData(lang).catch(() => null);
-  const globalData = globalResponse?.data?.attributes || globalResponse?.data || globalResponse?.data?.[0];
+  const globalData =
+    globalResponse?.data?.attributes ||
+    globalResponse?.data ||
+    globalResponse?.data?.[0];
   const globalHeader = (globalData?.blocks || []).find(
-    (b: any) => b.__component === "global.header"
+    (b: any) => b.__component === "global.header",
   );
   const globalFooter = (globalData?.blocks || []).find(
-    (b: any) => b.__component === "global.footer"
+    (b: any) => b.__component === "global.footer",
   );
 
   return (
-    <html lang={lang} dir={dir} className={`${sora.variable} ${dmSans.variable}`}>
+    <html
+      lang={lang}
+      dir={dir}
+      className={`${sora.variable} ${dmSans.variable}`}
+    >
       <body className="antialiased">
         <Header data={globalHeader} />
         {children}

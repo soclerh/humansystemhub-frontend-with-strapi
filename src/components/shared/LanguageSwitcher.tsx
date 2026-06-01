@@ -43,7 +43,7 @@ const LanguageSwitcher = () => {
   const languages = [
     { code: "en", name: "English", flag: "🇺🇸" },
     { code: "fr", name: "Français", flag: "🇫🇷" },
-    { code: "ar", name: "العربية", flag: "🇸🇦" },
+    // { code: "ar", name: "العربية", flag: "🇸🇦" },
   ];
 
   return (
@@ -53,7 +53,9 @@ const LanguageSwitcher = () => {
         className="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-2 rounded-full text-white transition-all cursor-pointer"
       >
         <span className="text-sm font-medium uppercase">{currentLang}</span>
-        <IoIosArrowDown className={`text-xs transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+        <IoIosArrowDown
+          className={`text-xs transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
       {isOpen && (
@@ -63,7 +65,9 @@ const LanguageSwitcher = () => {
               key={lang.code}
               onClick={() => changeLanguage(lang.code)}
               className={`w-full flex items-center justify-between px-4 py-3 text-sm transition-colors hover:bg-gray-50 ${
-                currentLang === lang.code ? "text-[#013228] font-bold bg-[#E3FFCD]/20" : "text-gray-600"
+                currentLang === lang.code
+                  ? "text-[#013228] font-bold bg-[#E3FFCD]/20"
+                  : "text-gray-600"
               }`}
             >
               <span>{lang.name}</span>
@@ -77,4 +81,3 @@ const LanguageSwitcher = () => {
 };
 
 export default LanguageSwitcher;
-
