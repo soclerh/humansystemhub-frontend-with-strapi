@@ -7,7 +7,11 @@ import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbx2VAM0ajMYMUATrQhEUJBqyKdIrd-T6SfWRwPHFFOrIMcfIUbppKFV9oar--ml3GoiFA/exec";
 
-export default function ContactForm() {
+export default function ContactForm({ data }: any) {
+  const email = data?.contacts[1];
+  const number = data?.contacts[2];
+  const address = data?.contacts[0];
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -19,6 +23,8 @@ export default function ContactForm() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // Added loading state
+
+  console.log("from contact form: ", data);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -152,9 +158,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <p className="font-bold text-gray-900 mb-1">Email Us</p>
-                  <p className="text-sm text-gray-500">
-                    contact@humansystems.io
-                  </p>
+                  <p className="text-sm text-gray-500">{email?.text}</p>
                 </div>
               </div>
 
@@ -176,7 +180,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <p className="font-bold text-gray-900 mb-1">Call Us</p>
-                  <p className="text-sm text-gray-500">+33 1 23 45 67 89</p>
+                  <p className="text-sm text-gray-500">{number?.text}</p>
                 </div>
               </div>
 
@@ -204,7 +208,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <p className="font-bold text-gray-900 mb-1">Visit Us</p>
-                  <p className="text-sm text-gray-500">Paris, France</p>
+                  <p className="text-sm text-gray-500">{address?.text}</p>
                 </div>
               </div>
             </div>
