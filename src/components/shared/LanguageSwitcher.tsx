@@ -12,6 +12,8 @@ const LanguageSwitcher = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const changeLanguage = (langCode: string) => {
+    // Persist the choice so middleware keeps it across pages
+    document.cookie = `NEXT_LOCALE=${langCode}; path=/; max-age=${60 * 60 * 24 * 365}`;
     const segments = pathname.split("/");
     if (segments.length > 1) {
       segments[1] = langCode;

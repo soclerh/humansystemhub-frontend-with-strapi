@@ -7,10 +7,89 @@ import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbx2VAM0ajMYMUATrQhEUJBqyKdIrd-T6SfWRwPHFFOrIMcfIUbppKFV9oar--ml3GoiFA/exec";
 
-export default function ContactForm({ data }: any) {
-  const email = data?.contacts[1];
-  const number = data?.contacts[2];
-  const address = data?.contacts[0];
+const translations: Record<string, any> = {
+  en: {
+    emailUs: "Email Us",
+    callUs: "Call Us",
+    visitUs: "Visit Us",
+    firstName: "First Name",
+    firstNamePlaceholder: "John",
+    lastName: "Last Name",
+    lastNamePlaceholder: "Doe",
+    workEmail: "Work Email",
+    emailPlaceholder: "john@company.com",
+    companyName: "Company Name",
+    companyPlaceholder: "Acme Inc.",
+    employees: "Number of Employees",
+    selectRange: "Select range",
+    subject: "Subject",
+    selectSubject: "Select a subject",
+    subjects: {
+      demo: "Request a Demo",
+      pricing: "Pricing Inquiry",
+      support: "Technical Support",
+      partnership: "Partnership",
+      other: "Other",
+    },
+    message: "Message",
+    messagePlaceholder: "Tell us about your needs...",
+    send: "Send Message",
+    sending: "Sending...",
+    privacy:
+      "By submitting this form, you agree to our Privacy Policy and Terms of Service.",
+    sentTitle: "Message Sent!",
+    sentText:
+      "Thank you for reaching out. Our team will get back to you within 24 hours.",
+    sendAnother: "Send Another Message",
+    errorGeneric: "Something went wrong. Please try again.",
+    errorNetwork:
+      "Something went wrong. Please check your connection and try again.",
+  },
+  fr: {
+    emailUs: "Écrivez-nous",
+    callUs: "Appelez-nous",
+    visitUs: "Rendez-nous visite",
+    firstName: "Prénom",
+    firstNamePlaceholder: "Jean",
+    lastName: "Nom",
+    lastNamePlaceholder: "Dupont",
+    workEmail: "E-mail professionnel",
+    emailPlaceholder: "jean@entreprise.com",
+    companyName: "Nom de l'entreprise",
+    companyPlaceholder: "Acme Inc.",
+    employees: "Nombre d'employés",
+    selectRange: "Sélectionnez une plage",
+    subject: "Objet",
+    selectSubject: "Sélectionnez un objet",
+    subjects: {
+      demo: "Demander une démo",
+      pricing: "Demande de tarification",
+      support: "Support technique",
+      partnership: "Partenariat",
+      other: "Autre",
+    },
+    message: "Message",
+    messagePlaceholder: "Parlez-nous de vos besoins...",
+    send: "Envoyer le message",
+    sending: "Envoi en cours...",
+    privacy:
+      "En soumettant ce formulaire, vous acceptez notre politique de confidentialité et nos conditions d'utilisation.",
+    sentTitle: "Message envoyé !",
+    sentText:
+      "Merci de nous avoir contactés. Notre équipe vous répondra dans les 24 heures.",
+    sendAnother: "Envoyer un autre message",
+    errorGeneric: "Une erreur s'est produite. Veuillez réessayer.",
+    errorNetwork:
+      "Une erreur s'est produite. Veuillez vérifier votre connexion et réessayer.",
+  },
+};
+
+export default function ContactForm({ data, info, lang = "en" }: any) {
+  const t = translations[lang] || translations.en;
+  const email = data?.contacts?.[1];
+  const number = data?.contacts?.[2];
+  const address = data?.contacts?.[0];
+  const { tag, title, description } = info || {};
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -23,8 +102,6 @@ export default function ContactForm({ data }: any) {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // Added loading state
-
-  console.log("from contact form: ", data);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -55,13 +132,11 @@ export default function ContactForm({ data }: any) {
       if (response.ok) {
         setIsSubmitted(true);
       } else {
-        alert("Something went wrong. Please try again.");
+        alert(t.errorGeneric);
       }
     } catch (error) {
       console.error("Error submitting form", error);
-      alert(
-        "Something went wrong. Please check your connection and try again.",
-      );
+      alert(t.errorNetwork);
     } finally {
       setIsSubmitting(false);
     }
@@ -87,11 +162,10 @@ export default function ContactForm({ data }: any) {
             </svg>
           </div>
           <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-            Message Sent!
+            {t.sentTitle}
           </h2>
           <p className="text-gray-500 text-lg max-w-lg mx-auto mb-8">
-            Thank you for reaching out. Our team will get back to you within 24
-            hours.
+            {t.sentText}
           </p>
           <button
             onClick={() => {
@@ -108,7 +182,7 @@ export default function ContactForm({ data }: any) {
             }}
             className="px-8 py-3 rounded-full border-2 border-[#013228] text-[#013228] font-bold text-sm hover:bg-[#013228] hover:text-[#E3FFCD] transition-all"
           >
-            Send Another Message
+            {t.sendAnother}
           </button>
         </div>
       </section>
@@ -125,16 +199,22 @@ export default function ContactForm({ data }: any) {
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-px w-8 bg-[#013228]" />
                 <span className="text-sm font-bold uppercase tracking-widest text-[#013228]">
-                  Contact Info
+                  {tag || "Contact Info"}
                 </span>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4">
-                We&apos;d love to <br />
-                <span className="text-[#013228]">hear from you.</span>
+              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4 whitespace-pre-line">
+                {title ? (
+                  title
+                ) : (
+                  <>
+                    We&apos;d love to <br />
+                    <span className="text-[#013228]">hear from you.</span>
+                  </>
+                )}
               </h2>
-              <p className="text-gray-500 leading-relaxed">
-                Fill out the form and our team will respond within 24 hours, or
-                reach us directly through the channels below.
+              <p className="text-gray-500 leading-relaxed whitespace-pre-line">
+                {description ||
+                  "Fill out the form and our team will respond within 24 hours, or reach us directly through the channels below."}
               </p>
             </div>
 
@@ -157,7 +237,7 @@ export default function ContactForm({ data }: any) {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-bold text-gray-900 mb-1">Email Us</p>
+                  <p className="font-bold text-gray-900 mb-1">{t.emailUs}</p>
                   <p className="text-sm text-gray-500">{email?.text}</p>
                 </div>
               </div>
@@ -179,7 +259,7 @@ export default function ContactForm({ data }: any) {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-bold text-gray-900 mb-1">Call Us</p>
+                  <p className="font-bold text-gray-900 mb-1">{t.callUs}</p>
                   <p className="text-sm text-gray-500">{number?.text}</p>
                 </div>
               </div>
@@ -207,7 +287,7 @@ export default function ContactForm({ data }: any) {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-bold text-gray-900 mb-1">Visit Us</p>
+                  <p className="font-bold text-gray-900 mb-1">{t.visitUs}</p>
                   <p className="text-sm text-gray-500">{address?.text}</p>
                 </div>
               </div>
@@ -223,7 +303,7 @@ export default function ContactForm({ data }: any) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    First Name
+                    {t.firstName}
                   </label>
                   <input
                     type="text"
@@ -232,12 +312,12 @@ export default function ContactForm({ data }: any) {
                     onChange={handleChange}
                     required
                     className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#013228] focus:border-transparent transition-all placeholder:text-gray-400"
-                    placeholder="John"
+                    placeholder={t.firstNamePlaceholder}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    Last Name
+                    {t.lastName}
                   </label>
                   <input
                     type="text"
@@ -246,14 +326,14 @@ export default function ContactForm({ data }: any) {
                     onChange={handleChange}
                     required
                     className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#013228] focus:border-transparent transition-all placeholder:text-gray-400"
-                    placeholder="Doe"
+                    placeholder={t.lastNamePlaceholder}
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Work Email
+                  {t.workEmail}
                 </label>
                 <input
                   type="email"
@@ -262,14 +342,14 @@ export default function ContactForm({ data }: any) {
                   onChange={handleChange}
                   required
                   className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#013228] focus:border-transparent transition-all placeholder:text-gray-400"
-                  placeholder="john@company.com"
+                  placeholder={t.emailPlaceholder}
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    Company Name
+                    {t.companyName}
                   </label>
                   <input
                     type="text"
@@ -277,12 +357,12 @@ export default function ContactForm({ data }: any) {
                     value={formData.company}
                     onChange={handleChange}
                     className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#013228] focus:border-transparent transition-all placeholder:text-gray-400"
-                    placeholder="Acme Inc."
+                    placeholder={t.companyPlaceholder}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    Number of Employees
+                    {t.employees}
                   </label>
                   <select
                     name="employees"
@@ -290,7 +370,7 @@ export default function ContactForm({ data }: any) {
                     onChange={handleChange}
                     className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#013228] focus:border-transparent transition-all appearance-none"
                   >
-                    <option value="">Select range</option>
+                    <option value="">{t.selectRange}</option>
                     <option value="1-25">1 – 25</option>
                     <option value="26-100">26 – 100</option>
                     <option value="101-500">101 – 500</option>
@@ -301,7 +381,7 @@ export default function ContactForm({ data }: any) {
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Subject
+                  {t.subject}
                 </label>
                 <select
                   name="subject"
@@ -310,18 +390,18 @@ export default function ContactForm({ data }: any) {
                   required
                   className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#013228] focus:border-transparent transition-all appearance-none"
                 >
-                  <option value="">Select a subject</option>
-                  <option value="demo">Request a Demo</option>
-                  <option value="pricing">Pricing Inquiry</option>
-                  <option value="support">Technical Support</option>
-                  <option value="partnership">Partnership</option>
-                  <option value="other">Other</option>
+                  <option value="">{t.selectSubject}</option>
+                  <option value="demo">{t.subjects.demo}</option>
+                  <option value="pricing">{t.subjects.pricing}</option>
+                  <option value="support">{t.subjects.support}</option>
+                  <option value="partnership">{t.subjects.partnership}</option>
+                  <option value="other">{t.subjects.other}</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Message
+                  {t.message}
                 </label>
                 <textarea
                   name="message"
@@ -330,7 +410,7 @@ export default function ContactForm({ data }: any) {
                   required
                   rows={5}
                   className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#013228] focus:border-transparent transition-all resize-none placeholder:text-gray-400"
-                  placeholder="Tell us about your needs..."
+                  placeholder={t.messagePlaceholder}
                 />
               </div>
 
@@ -343,14 +423,11 @@ export default function ContactForm({ data }: any) {
                     : "hover:scale-[1.02]"
                 }`}
               >
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting ? t.sending : t.send}
                 {!isSubmitting && <HiOutlineArrowNarrowRight size={18} />}
               </button>
 
-              <p className="text-xs text-gray-400 text-center">
-                By submitting this form, you agree to our Privacy Policy and
-                Terms of Service.
-              </p>
+              <p className="text-xs text-gray-400 text-center">{t.privacy}</p>
             </form>
           </div>
         </div>

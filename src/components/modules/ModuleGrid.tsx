@@ -108,7 +108,14 @@ export default async function ModuleGrid({ lang = "en", data }: { lang?: string,
   const { tag, title, description } = data || {};
   
   const allModulesData = await getAllModulesData(lang);
-  const modulesList = allModulesData?.data || [];
+  const modulesList = [...(allModulesData?.data || [])].sort((a: any, b: any) => {
+    const getNum = (m: any) => {
+      const attrs = m.attributes || m;
+      const match = String(attrs.module_count || "").match(/\d+/);
+      return match ? parseInt(match[0], 10) : Number(attrs.moduleNumber) || 999;
+    };
+    return getNum(a) - getNum(b);
+  });
 
   return (
     <section className="py-20 px-6 bg-[#FCFDFB]">

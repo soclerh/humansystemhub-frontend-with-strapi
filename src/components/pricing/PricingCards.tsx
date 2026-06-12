@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Check } from "lucide-react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 
@@ -12,6 +14,8 @@ export default function PricingCards({
   fallbackData?: any;
 }) {
   const [isAnnual, setIsAnnual] = useState(true);
+  const pathname = usePathname();
+  const lang = pathname.split("/")[1] || "en";
 
   // Safely extract the dynamic cards array. If missing or empty, use fallback.
   const dynamicCards = pricingData?.cards;
@@ -149,7 +153,8 @@ export default function PricingCards({
               </div>
 
               {/* CTA Button */}
-              <button
+              <Link
+                href={`/${lang}/contact`}
                 className={`w-full py-4 rounded-2xl font-bold text-sm tracking-wider transition-all duration-300 flex items-center justify-center gap-2 ${
                   plan.highlighted
                     ? "bg-[#E3FFCD] text-[#013228] hover:scale-105 shadow-xl"
@@ -158,7 +163,7 @@ export default function PricingCards({
               >
                 {plan.cta}
                 <HiOutlineArrowNarrowRight size={18} />
-              </button>
+              </Link>
             </div>
           ))}
         </div>
