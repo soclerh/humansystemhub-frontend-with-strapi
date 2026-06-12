@@ -82,6 +82,7 @@ export async function getHomePageData(locale: string = "en") {
 export const AllModulesQuery = (locale: string = "en") =>
   qs.stringify({
     locale: locale,
+    sort: ["module_count:asc"],
     populate: {
       icon: {
         populate: "*",

@@ -7,7 +7,14 @@ import { getAllModulesData } from "@/data/loader";
 export default async function OurModules({ data, lang = "en" }: any) {
   const { tag, title, description } = data || {};
   const strapiData = await getAllModulesData(lang);
-  const modulesList = strapiData?.data || [];
+  const modulesList = [...(strapiData?.data || [])].sort((a: any, b: any) => {
+    const getNum = (m: any) => {
+      const attrs = m.attributes || m;
+      const match = String(attrs.module_count || "").match(/\d+/);
+      return match ? parseInt(match[0], 10) : Number(attrs.moduleNumber) || 999;
+    };
+    return getNum(a) - getNum(b);
+  });
 
   return (
     <section className="py-20 px-6 bg-[#FCFDFB]">

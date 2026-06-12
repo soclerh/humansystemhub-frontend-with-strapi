@@ -6,13 +6,28 @@ const defaultLocale = 'en';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const pathnameHasLocale = locales.some(
+  const pathnameLocale = locales.find(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  if (pathnameHasLocale) return;
+  if (pathnameLocale) {
+    // Keep the cookie in sync with the locale in the URL
+    const response = NextResponse.next();
+    if (request.cookies.get('NEXT_LOCALE')?.value !== pathnameLocale) {
+      response.cookies.set('NEXT_LOCALE', pathnameLocale, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365,
+      });
+    }
+    return response;
+  }
 
-  request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
+  // No locale in the path — use the saved preference, falling back to default
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
+  const locale =
+    cookieLocale && locales.includes(cookieLocale) ? cookieLocale : defaultLocale;
+
+  request.nextUrl.pathname = `/${locale}${pathname}`;
   return NextResponse.redirect(request.nextUrl);
 }
 
