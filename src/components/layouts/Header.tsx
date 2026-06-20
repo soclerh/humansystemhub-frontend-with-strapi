@@ -57,7 +57,7 @@ export default function Header({ data }: { data?: any }) {
 
   const defaultNavLinks = [
     { name: "About", href: "/about" },
-    { name: "Modules", href: "/modules" },
+    // { name: "Modules", href: "/modules" },
     { name: "Pricing", href: "/pricing" },
     { name: "Blog", href: "/blog" },
     {
@@ -74,18 +74,20 @@ export default function Header({ data }: { data?: any }) {
 
   const { logo, navigation, cta } = data || {};
 
-  const displayNavLinks = navigation && navigation.length > 0
-    ? navigation.map((navItem: any) => ({
-        name: navItem.name || navItem.text,
-        href: navItem.href === null ? "#" : `/${navItem.href || ""}`,
-        dropdown: navItem.sub_links && navItem.sub_links.length > 0
-          ? navItem.sub_links.map((sub: any) => ({
-              name: sub.text || sub.name,
-              href: `/${sub.href || ""}`
-            }))
-          : null
-      }))
-    : defaultNavLinks;
+  const displayNavLinks =
+    navigation && navigation.length > 0
+      ? navigation.map((navItem: any) => ({
+          name: navItem.name || navItem.text,
+          href: navItem.href === null ? "#" : `/${navItem.href || ""}`,
+          dropdown:
+            navItem.sub_links && navItem.sub_links.length > 0
+              ? navItem.sub_links.map((sub: any) => ({
+                  name: sub.text || sub.name,
+                  href: `/${sub.href || ""}`,
+                }))
+              : null,
+        }))
+      : defaultNavLinks;
 
   const logoUrl = logo?.data?.attributes?.url || logo?.url;
   const fullLogoSrc = logoUrl ? `${getStrapiURL()}${logoUrl}` : "/logo-3.svg";
@@ -152,7 +154,7 @@ export default function Header({ data }: { data?: any }) {
           {/* Desktop CTA + Mobile toggle */}
           <div className="flex items-center gap-4">
             <LanguageSwitcher />
-            <Link href={cta?.href ? `/${cta.href}` : "/contact"} className="hidden sm:block">
+            <Link href="/get-started" className="hidden sm:block">
               <button className="flex items-center gap-2 bg-white rounded-full py-3 px-6 text-xs uppercase tracking-[0.1em] font-bold text-[#013228] cursor-pointer hover:bg-[#d4ffb8] transition-colors group">
                 {cta?.text || "Get Started"}
                 <IoIosArrowRoundForward
@@ -259,7 +261,7 @@ export default function Header({ data }: { data?: any }) {
           </nav>
 
           <div className="pt-6 border-t border-white/10">
-            <Link href={cta?.href ? `/${cta.href}` : "/contact"} onClick={() => setMobileOpen(false)}>
+            <Link href="/get-started" onClick={() => setMobileOpen(false)}>
               <button className="group w-full flex items-center justify-center gap-2 bg-white rounded-2xl py-4 px-6 text-sm uppercase tracking-[0.1em] font-bold text-[#013228] hover:bg-[#013228] hover:text-[#E3FFCD] transition-all duration-300 border border-transparent hover:border-[#E3FFCD]">
                 {cta?.text || "Get Started"}
                 <IoIosArrowRoundForward
